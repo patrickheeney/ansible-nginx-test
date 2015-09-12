@@ -1,0 +1,74 @@
+# - name: "Prepare"
+#   hosts: 'all:!localhost'
+#   become: True
+#   roles:
+#     - { role: debops.core, tags: [core] }
+
+- name: "Prepare"
+  hosts: vagrant
+  become: True
+  tasks:
+    - name: Remove facts
+      file:
+        path: '/etc/ansible/facts.d/'
+        state: 'absent'
+      tags: [nginx, sites]
+    - name: Create crt dir
+      file: 
+        path: '/etc/pki/system/'
+        state: 'directory'
+      tags: [nginx, sites]
+    - name: Create fake crt
+      command: >
+        openssl req -x509 -nodes -days 365 -subj '/C=CA/ST=QC/L=Montreal/O=Test/CN=test1.com' -newkey rsa:2048 -keyout /etc/pki/system/default.key -out /etc/pki/system/default.crt 
+        creates=/etc/pki/system/default.crt
+      tags: [nginx, sites]
+
+- name: "Vagrant"
+  hosts: vagrant
+  become: True
+  roles:
+    - role: debops.nginx
+      tags: [nginx]
+      nginx_servers:
+        - by_role: 'playbook'
+          enabled: True
+          name: ['test1.com', 'www.test1.com']
+          owner: 'www-data'
+          type: 'php5'
+        - by_role: 'playbook'
+          enabled: True
+          name: ['test2.com', 'www.test2.com']
+          owner: 'www-data'
+          type: 'php5'
+          ssl: True
+        - by_role: 'playbook'
+          enabled: True
+          name: ['test3.com', 'www.test3.com']
+          owner: 'www-data'
+          type: 'php5'
+
+    - role: sites
+      tags: [sites]
+
+    - role: debops.nginx
+      tags: [nginx]
+      nginx_servers:
+        - by_role: 'playbook'
+          enabled: True
+          name: ['test8.com', 'www.test8.com']
+          owner: 'www-data'
+          type: 'php5'
+
+  tasks:
+    - debug: msg="Playbook - Debug"
+      tags: [nginx, sites]
+    - debug: var=nginx_register_default_server_http
+      tags: [nginx, sites]
+    - debug: var=nginx_register_default_server_https
+      tags: [nginx, sites]
+    - command: cat /etc/ansible/facts.d/nginx.fact
+      register: test_register_fact
+      tags: [nginx, sites]
+    - debug: var=test_register_fact.stdout_lines
+      tags: [nginx, sites]

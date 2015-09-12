@@ -1,0 +1,29 @@
+dependencies:
+  - role: debops.secret
+
+  - role: debops.nginx
+    nginx_servers:
+      - by_role: 'sites'
+        enabled: True
+        name: ['test4.com', 'www.test4.com']
+        owner: 'www-data'
+        type: 'php5'
+        ssl: True
+      - by_role: 'sites'
+        enabled: True
+        name: ['test5.com', 'www.test5.com']
+        owner: 'www-data'
+        type: 'php5'
+
+  - role: debops.nginx
+    nginx_servers:
+      - by_role: 'sites'
+        enabled: True
+        name: ['test6.com', 'www.test6.com']
+        owner: 'www-data'
+        type: 'php5'
+      - by_role: 'sites'
+        enabled: True
+        name: ['test7.com', 'www.test7.com']
+        owner: 'www-data'
+        type: 'php5'

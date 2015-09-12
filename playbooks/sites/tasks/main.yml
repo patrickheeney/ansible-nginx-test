@@ -1,0 +1,3 @@
+- debug: msg="Sites - Debug"
+- debug: var=nginx_register_default_server_http
+- debug: var=nginx_register_default_server_https

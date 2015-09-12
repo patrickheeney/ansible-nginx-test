@@ -1,0 +1,5 @@
+.protobox
+.vagrant
+vendor/
+secret.yml
+secret/

@@ -1,0 +1,23 @@
+- name: debops.core
+  src: https://github.com/debops/ansible-core.git
+  version: master
+
+- name: debops.secret
+  src: https://github.com/debops/ansible-secret.git
+  version: master
+
+- name: debops.apt_preferences
+  src: https://github.com/debops/ansible-apt_preferences.git
+  version: master
+
+- name: debops.ferm
+  src: https://github.com/debops/ansible-ferm.git
+  version: master
+
+# - name: debops.nginx
+#   src: https://github.com/debops/ansible-nginx.git
+#   version: master
+
+- name: debops.nginx
+  src: https://github.com/patrickheeney/ansible-nginx.git
+  version: 'ssltest'
