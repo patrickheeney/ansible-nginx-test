@@ -1,4 +1,6 @@
-# Infrastructure
+# Test
+
+This playbook is to test `debops.nginx` http and https site detection.
 
 ## Install
 
